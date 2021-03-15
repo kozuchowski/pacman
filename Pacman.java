@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Pacman {
 	
 	static char[][] field =  new char [10][10];
+	static char[][] way = new char[10][10];
 	static int count = 0;
 	static int x = (int) Math.floor(Math.random() * field.length);
 	static int y = (int) Math.floor(Math.random() * field[0].length);
@@ -13,11 +14,33 @@ public class Pacman {
 	static int l = 0;
 	static int hLimit = 0;
 	
+	public static boolean way (char[][] a) {
+		
+		if(way[x][y] == field[i][j]) 
+			return true;
+		
+			if (field[x][y + 1] == '_') {
+				way[x][y + 1] = 'X';
+				way[x][y] = '_';
+			return way(a);
+			}else if (field[x][y - 1] == '_') {
+				way[x][y - 1] = 'X';
+				way[x][y] = '_';
+				return way(a);
+			}else if (field[x + 1][y] == '_') {
+				way[x + 1][y] = 'X';
+				way[x][y] = '_';
+				return way(a);
+			}else if (field[x - 1][y] == '_') {
+				way[x - 1][y] = 'X';
+				way[x][y] = '_';
+				return way(a);
+			}
+		 
+		return false;
 	
-	
+	}
 	public static void pacman () {
-		
-		
 		
 		while(x == i && y == j) {
 			i = (int) Math.floor(Math.random() * field.length);
@@ -37,7 +60,7 @@ public class Pacman {
 		field[i][j] = 'O';
 		
 		
-		//h posisions
+		//H posisions
 		while (hLimit < 30) {
 				k = (int) Math.floor(Math.random() * field.length);
 				l = (int) Math.floor(Math.random() * field[0].length);
@@ -62,7 +85,7 @@ public class Pacman {
 	
 		
 		//moving
-	while (y != 11) {
+	while (y != field.length + 1) {
 		String move = scanner.nextLine();
 		if(move.equals("w" )&& x >= 1 && field[x-1][y] != 'H') {	
 			x -= 1;
@@ -91,14 +114,16 @@ public class Pacman {
 			i = (int) Math.floor(Math.random() * field.length);
 			j = (int) Math.floor(Math.random() * field[0].length);
 			
-			while(field[i][j] == 'H' || field[i][j] == 'X')
+			while(field[i][j] == 'H' || field[i][j] == 'X') { 
 				i = (int) Math.floor(Math.random() * field.length);
 				j = (int) Math.floor(Math.random() * field[0].length);
+			}
 				field[i][j] = 'O';
+
 		}
 			
 		else if(move.equals("q"))
-			y = 11;
+			y = field.length + 1;
 		
 		System.out.println(x + " " + y);
 		for(int i = 0; i < field.length; i++) {
@@ -106,6 +131,8 @@ public class Pacman {
 			
 		};
 		System.out.println("score: " + count);
+		
+		
 	}
 	}
 
