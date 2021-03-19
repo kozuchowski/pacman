@@ -4,40 +4,95 @@ import java.util.Scanner;
 public class Pacman {
 	
 	static char[][] field =  new char [10][10];
-	static char[][] way = new char[10][10];
+	static char[][] wayToO = new char[field.length][field[0].length];
 	static int count = 0;
+	//X possition
 	static int x = (int) Math.floor(Math.random() * field.length);
 	static int y = (int) Math.floor(Math.random() * field[0].length);
+	//O posiition
 	static int i = (int) Math.floor(Math.random() * field.length);
 	static int j = (int) Math.floor(Math.random() * field[0].length);
+	// tempX possition
+	static int tempX = x;
+	static int tempY = y;
+	//H possitions
 	static int k = 0;
 	static int l = 0;
+	//H counter
 	static int hLimit = 0;
+	//function chooser
+	static int choose = (int)Math.floor(Math.random() * 4);
 	
-	public static boolean way (char[][] a) {
+	
+	public static void right(char[][] tempArr) {
+		if(tempY < field[0].length - 1) {
+			if(field[tempX][tempY + 1] == '_') {
+				tempY = tempY + 1;
+				tempArr[tempX][tempY] = 'X';
+				tempArr[tempX][tempY - 1] = '_';
+			}else {
+				choose = (int)Math.floor(Math.random() * 4);
+		}
+		}
 		
-		if(way[x][y] == field[i][j]) 
+	}
+	public static void left(char[][] tempArr) {
+		if(tempY - 1 > 0) {
+			if(field[tempX][tempY - 1] == '_') {
+				tempY = tempY - 1;
+				tempArr[tempX][tempY] = 'X';
+				tempArr[tempX][tempY + 1] = '_';
+			}else {
+				choose = (int)Math.floor(Math.random() * 4);
+			}
+		}
+		
+	}
+	public static void up(char[][] tempArr) {
+		if(tempX - 1 > 0) {
+			if(field[tempX - 1][tempY] == '_') {
+				tempX = tempX - 1;
+				tempArr[tempX][tempY] = 'X';
+				tempArr[tempX + 1][tempY] = '_';
+			}else {
+				choose = (int)Math.floor(Math.random() * 4);
+			}
+		}
+		
+	}
+	public static void down(char[][] tempArr) {
+		if(tempX < field.length - 1) {
+			if(field[tempX + 1][tempY] == '_') {
+				tempX = tempX + 1;
+				tempArr[tempX][tempY] = 'X';
+				tempArr[tempX - 1][tempY] = '_';
+			}else {
+				choose = (int)Math.floor(Math.random() * 4);
+			}
+		}
+		
+	}
+	
+	public static boolean way (char[][] tempArr) {
+		if(tempX == i && tempY == j)
 			return true;
 		
-			if (field[x][y + 1] == '_') {
-				way[x][y + 1] = 'X';
-				way[x][y] = '_';
-			return way(a);
-			}else if (field[x][y - 1] == '_') {
-				way[x][y - 1] = 'X';
-				way[x][y] = '_';
-				return way(a);
-			}else if (field[x + 1][y] == '_') {
-				way[x + 1][y] = 'X';
-				way[x][y] = '_';
-				return way(a);
-			}else if (field[x - 1][y] == '_') {
-				way[x - 1][y] = 'X';
-				way[x][y] = '_';
-				return way(a);
-			}
-		 
-		return false;
+		if(choose == 0) {
+			right(tempArr);
+			way(tempArr);
+		}else if(choose == 1) {
+			up(tempArr);
+			way(tempArr);
+		}else if (choose  == 2) {
+			down(tempArr);
+			way(tempArr);
+		}else if(choose == 3) {
+			left(tempArr);
+			way(tempArr);
+		}
+		
+		
+			return false;
 	
 	}
 	public static void pacman () {
@@ -71,7 +126,8 @@ public class Pacman {
 				}
 		
 		}
-			
+//		if(way(wayToO) == true)
+//			System.out.println("dzia³a");
 	
 		
 		//field printing
@@ -119,6 +175,8 @@ public class Pacman {
 				j = (int) Math.floor(Math.random() * field[0].length);
 			}
 				field[i][j] = 'O';
+//				if(way(wayToO) == true)
+//					System.out.println("dzia³a");
 
 		}
 			
@@ -137,7 +195,6 @@ public class Pacman {
 	}
 
 	public static void main(String[] args) {
-		
 		pacman();
 	}
 	
