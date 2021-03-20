@@ -1,3 +1,3 @@
 # pacman
 
-Game in progres..
+Game in progress..
