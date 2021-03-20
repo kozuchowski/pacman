@@ -21,78 +21,57 @@ public class Pacman {
 	//H counter
 	static int hLimit = 0;
 	//function chooser
-	static int choose = (int)Math.floor(Math.random() * 4);
+	static int direction = (int)Math.floor(Math.random() * 4);
 	
 	
-	public static void right(char[][] tempArr) {
-		if(tempY < field[0].length - 1) {
-			if(field[tempX][tempY + 1] == '_') {
-				tempY = tempY + 1;
-				tempArr[tempX][tempY] = 'X';
-				tempArr[tempX][tempY - 1] = '_';
-			}else {
-				choose = (int)Math.floor(Math.random() * 4);
-		}
-		}
-		
+	public static void right() {
+		tempY += 1;
+		direction = (int)Math.floor(Math.random() * 4);
 	}
-	public static void left(char[][] tempArr) {
-		if(tempY - 1 > 0) {
-			if(field[tempX][tempY - 1] == '_') {
-				tempY = tempY - 1;
-				tempArr[tempX][tempY] = 'X';
-				tempArr[tempX][tempY + 1] = '_';
-			}else {
-				choose = (int)Math.floor(Math.random() * 4);
-			}
-		}
-		
+	public static void left() {
+		tempY -= 1;
+		direction = (int)Math.floor(Math.random() * 4);
 	}
-	public static void up(char[][] tempArr) {
-		if(tempX - 1 > 0) {
-			if(field[tempX - 1][tempY] == '_') {
-				tempX = tempX - 1;
-				tempArr[tempX][tempY] = 'X';
-				tempArr[tempX + 1][tempY] = '_';
-			}else {
-				choose = (int)Math.floor(Math.random() * 4);
-			}
-		}
-		
+	public static void up() {
+		tempX -= 1;	
+		direction = (int)Math.floor(Math.random() * 4);
 	}
-	public static void down(char[][] tempArr) {
-		if(tempX < field.length - 1) {
-			if(field[tempX + 1][tempY] == '_') {
-				tempX = tempX + 1;
-				tempArr[tempX][tempY] = 'X';
-				tempArr[tempX - 1][tempY] = '_';
-			}else {
-				choose = (int)Math.floor(Math.random() * 4);
-			}
-		}
-		
+	public static void down() {
+		tempX += 1;
+		direction = (int)Math.floor(Math.random() * 4);
 	}
-	
-	public static boolean way (char[][] tempArr) {
-		if(tempX == i && tempY == j)
+	// way function works only if there is a way to the "O", otherwise it blows up with StackOverflowError
+	public static boolean way () {
+//		System.out.println(tempX + " " + tempY + " " + "direction:" + direction);
+		if(field[tempX][tempY] == 'O') {
+			System.out.println("jest droga");
 			return true;
-		
-		if(choose == 0) {
-			right(tempArr);
-			way(tempArr);
-		}else if(choose == 1) {
-			up(tempArr);
-			way(tempArr);
-		}else if (choose  == 2) {
-			down(tempArr);
-			way(tempArr);
-		}else if(choose == 3) {
-			left(tempArr);
-			way(tempArr);
+		}else {
+			if(direction == 0) {
+				if(tempY +1 < field[0].length && field[tempX][tempY +1] != 'H') {
+					right();
+					
+				}
+			}else if(direction == 1) {
+				if(tempY -1 >= 0 && field[tempX][tempY -1] != 'H') {
+					left();
+					
+				}
+			}else if(direction == 2) {
+				if(tempX -1 >= 0 && field[tempX -1][tempY] != 'H') {
+					up();
+					
+				}
+			}else if(direction == 3) {
+				if(tempX +1 < field.length && field[tempX +1][tempY] != 'H') {
+					down();
+					
+				}
+			}
 		}
-		
-		
-			return false;
+		direction = (int)Math.floor(Math.random() * 4);
+		way();
+		return false;
 	
 	}
 	public static void pacman () {
@@ -126,8 +105,12 @@ public class Pacman {
 				}
 		
 		}
-//		if(way(wayToO) == true)
-//			System.out.println("dzia³a");
+		
+		//way possibility checking
+		if(way() == true)
+			System.out.println("dzia³a");
+		
+			
 	
 		
 		//field printing
@@ -175,15 +158,21 @@ public class Pacman {
 				j = (int) Math.floor(Math.random() * field[0].length);
 			}
 				field[i][j] = 'O';
-//				if(way(wayToO) == true)
-//					System.out.println("dzia³a");
+				
+				//way possibility checking
+				if(way() == true)
+					System.out.println("dzia³a");
+				
+					
+					
+				
 
 		}
 			
 		else if(move.equals("q"))
 			y = field.length + 1;
 		
-		System.out.println(x + " " + y);
+		
 		for(int i = 0; i < field.length; i++) {
 			System.out.println(Arrays.toString(field[i]));
 			
@@ -195,7 +184,9 @@ public class Pacman {
 	}
 
 	public static void main(String[] args) {
+		
 		pacman();
+		
 	}
 	
 }	
