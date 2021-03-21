@@ -22,6 +22,8 @@ public class Pacman {
 	static int hLimit = 0;
 	//function chooser
 	static int direction = (int)Math.floor(Math.random() * 4);
+	//iteration limit
+	static int counter = 0;
 	
 	
 	public static void right() {
@@ -43,34 +45,37 @@ public class Pacman {
 	// way function works only if there is a way to the "O", otherwise it blows up with StackOverflowError
 	public static boolean way () {
 //		System.out.println(tempX + " " + tempY + " " + "direction:" + direction);
-		if(field[tempX][tempY] == 'O') {
-			System.out.println("jest droga");
-			return true;
-		}else {
-			if(direction == 0) {
-				if(tempY +1 < field[0].length && field[tempX][tempY +1] != 'H') {
-					right();
-					
-				}
-			}else if(direction == 1) {
-				if(tempY -1 >= 0 && field[tempX][tempY -1] != 'H') {
-					left();
-					
-				}
-			}else if(direction == 2) {
-				if(tempX -1 >= 0 && field[tempX -1][tempY] != 'H') {
-					up();
-					
-				}
-			}else if(direction == 3) {
-				if(tempX +1 < field.length && field[tempX +1][tempY] != 'H') {
-					down();
-					
+		while(counter < 3999) { //very poorly limited
+			if(field[tempX][tempY] == 'O') {
+				return true;
+			}else {
+				if(direction == 0) {
+					if(tempY +1 < field[0].length && field[tempX][tempY +1] != 'H') {
+						right();
+						
+					}
+				}else if(direction == 1) {
+					if(tempY -1 >= 0 && field[tempX][tempY -1] != 'H') {
+						left();
+						
+					}
+				}else if(direction == 2) {
+					if(tempX -1 >= 0 && field[tempX -1][tempY] != 'H') {
+						up();
+						
+					}
+				}else if(direction == 3) {
+					if(tempX +1 < field.length && field[tempX +1][tempY] != 'H') {
+						down();
+						
+					}
 				}
 			}
+			direction = (int)Math.floor(Math.random() * 4);
+			counter++;
+			way();
 		}
-		direction = (int)Math.floor(Math.random() * 4);
-		way();
+
 		return false;
 	
 	}
@@ -107,10 +112,11 @@ public class Pacman {
 		}
 		
 		//way possibility checking
-		if(way() == true)
-			System.out.println("dzia³a");
+		if(way() == true) {
+			System.out.println("There is a way");
+		}else 
+			System.out.println("No possible way. Game Over!");
 		
-			
 	
 		
 		//field printing
@@ -150,6 +156,7 @@ public class Pacman {
 		}
 		if(x == i && y == j) {
 			count ++;
+			counter = 0;
 			i = (int) Math.floor(Math.random() * field.length);
 			j = (int) Math.floor(Math.random() * field[0].length);
 			
@@ -160,10 +167,11 @@ public class Pacman {
 				field[i][j] = 'O';
 				
 				//way possibility checking
-				if(way() == true)
-					System.out.println("dzia³a");
+				if(way() == true) {
+					System.out.println("There is a way");
+				}else 
+					System.out.println("No possible way. Game over!");
 				
-					
 					
 				
 
