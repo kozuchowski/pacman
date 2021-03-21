@@ -42,10 +42,9 @@ public class Pacman {
 		tempX += 1;
 		direction = (int)Math.floor(Math.random() * 4);
 	}
-	// way function works only if there is a way to the "O", otherwise it blows up with StackOverflowError
 	public static boolean way () {
 //		System.out.println(tempX + " " + tempY + " " + "direction:" + direction);
-		while(counter < 3999) { //very poorly limited
+		while(counter < 3500) { //very poorly limited
 			if(field[tempX][tempY] == 'O') {
 				return true;
 			}else {
