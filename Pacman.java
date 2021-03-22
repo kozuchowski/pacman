@@ -24,57 +24,54 @@ public class Pacman {
 	static int direction = (int)Math.floor(Math.random() * 4);
 	//iteration limit
 	static int counter = 0;
+	static int recuX = x;
+	static int recuY = y;
 	
-	
-	public static void right() {
-		tempY += 1;
-		direction = (int)Math.floor(Math.random() * 4);
-	}
-	public static void left() {
-		tempY -= 1;
-		direction = (int)Math.floor(Math.random() * 4);
-	}
-	public static void up() {
-		tempX -= 1;	
-		direction = (int)Math.floor(Math.random() * 4);
-	}
-	public static void down() {
-		tempX += 1;
-		direction = (int)Math.floor(Math.random() * 4);
-	}
-	public static boolean way () {
-//		System.out.println(tempX + " " + tempY + " " + "direction:" + direction);
-		while(counter < 3500) { //very poorly limited
-			if(field[tempX][tempY] == 'O') {
-				return true;
-			}else {
-				if(direction == 0) {
-					if(tempY +1 < field[0].length && field[tempX][tempY +1] != 'H') {
-						right();
-						
-					}
-				}else if(direction == 1) {
-					if(tempY -1 >= 0 && field[tempX][tempY -1] != 'H') {
-						left();
-						
-					}
-				}else if(direction == 2) {
-					if(tempX -1 >= 0 && field[tempX -1][tempY] != 'H') {
-						up();
-						
-					}
-				}else if(direction == 3) {
-					if(tempX +1 < field.length && field[tempX +1][tempY] != 'H') {
-						down();
-						
-					}
-				}
+	public static boolean way (char[][] field, char[][] arr, int x, int y) {
+//		for(int i = 0; i < field.length; i++) {
+//			System.out.println(Arrays.toString(field[i]));
+//		}
+//		System.out.println(" ");
+//		for(int i = 0; i < field.length; i++) {
+//			System.out.println(Arrays.toString(arr[i]));
+//		}
+//		System.out.println(" ");
+		
+		if(field[x][y] == 'O') {
+			System.out.println("znalaz³em");
+			return true;
+			
+		}else {
+			
+			if(y + 1 < arr.length && (field[x][y + 1] == '_' || field[x][y + 1] == 'O') && arr[x][y + 1] != 'X') {
+				System.out.println(counter + " right ");
+				arr[x][y + 1] = 'X';
+				
+				way(field, arr, x, y + 1);
+				
+			}else if(y - 1 >= 0 && (field[x][y - 1] == '_' || field[x][y - 1] == 'O') && arr[x][y - 1] != 'X') {
+				System.out.println(counter + " left ");
+				arr[x][y - 1] = 'X';
+				
+				way(field, arr, x, y - 1);
+				
+			}else if(x + 1 < arr.length && (field[x + 1][y] == '_' || field[x + 1][y] == 'O') && arr[x + 1][y] != 'X') {
+				System.out.println(counter + " down ");
+				arr[x + 1][y] = 'X';
+				
+				way(field, arr, x + 1, y);
+			}else if(x - 1 >= 0 && (field[x - 1][y] == '_' || field[x - 1][y] == 'O') && arr[x - 1][y] != 'X') {
+				System.out.println(counter + " up ");
+				arr[x - 1][y] = 'X';
+				
+				way(field, arr, x - 1, y);
 			}
-			direction = (int)Math.floor(Math.random() * 4);
-			counter++;
-			way();
 		}
-
+		counter++;
+		System.out.println(x+ " " + y);
+		
+		
+		
 		return false;
 	
 	}
@@ -110,11 +107,12 @@ public class Pacman {
 		
 		}
 		
-		//way possibility checking
-		if(way() == true) {
-			System.out.println("There is a way");
-		}else 
-			System.out.println("No possible way. Game Over!");
+//		//way possibility checking
+		if(way(field, wayToO, tempX, tempY) == false)
+			System.out.println("game over");
+		
+			
+		
 		
 	
 		
@@ -166,10 +164,9 @@ public class Pacman {
 				field[i][j] = 'O';
 				
 				//way possibility checking
-				if(way() == true) {
-					System.out.println("There is a way");
-				}else 
-					System.out.println("No possible way. Game over!");
+				if(way(field, wayToO, tempX, tempY) == false)
+					System.out.println("game over");
+				
 				
 					
 				
