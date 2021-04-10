@@ -27,7 +27,6 @@ public class Pacman {
 	static boolean up;
 	static boolean down;
 	
-	
 	static WayCheck wayCheck = new WayCheck();
 	
 	public static boolean pacman () {
@@ -51,7 +50,7 @@ public class Pacman {
 		
 		
 		//H posisions
-		while (hLimit < 30) {
+		while (hLimit < 35) {
 				k = (int) Math.floor(Math.random() * field.length);
 				l = (int) Math.floor(Math.random() * field[0].length);
 				
@@ -63,13 +62,15 @@ public class Pacman {
 		}
 		
 //		//way possibility checking
-		if(wayCheck.way(field, wayToO, tempX, tempY, right, left, up, down, i, j) == false) {
+		if(wayCheck.way(field, wayToO, tempX, tempY, right, left, up, down) == false) {
+			
 			System.out.println("game over");
 			return false;
 		}else System.out.println("dzia³a");
 		
-			
-		
+		tempX = x;
+		tempY = y;
+		wayToO = new char[field.length][field[0].length];
 		
 	
 		
@@ -118,15 +119,17 @@ public class Pacman {
 				i = (int) Math.floor(Math.random() * field.length);
 				j = (int) Math.floor(Math.random() * field[0].length);
 			}
-				field[i][j] = 'O';
-				
+				field[i][j] = 'O';	
+
 //				way possibility checking
-				if(wayCheck.way(field, wayToO, tempX, tempY, right, left, up, down, i, j) == false) {
+				if(wayCheck.way(field, wayToO, tempX, tempY, right, left, up, down) == false) {
+					
 					System.out.println("game over");
 					return false;
-				}
-					
-
+				}else System.out.println("dzia³a");
+				tempX = x;
+				tempY = y;
+				wayToO = new char[field.length][field[0].length];
 		}
 			
 		else if(move.equals("q"))
@@ -137,6 +140,7 @@ public class Pacman {
 			System.out.println(Arrays.toString(field[i]));
 			
 		};
+
 		System.out.println("score: " + count);
 		
 		
