@@ -1,8 +1,20 @@
 import java.util.Arrays;
-
+//koniec!!
 public class WayCheck {
-
-	public static boolean way (char[][] field, char[][] arr, int tempX, int tempY, boolean r, boolean l, boolean u, boolean d) {
+	static char[][] arr;
+	static int x;
+	static int y;
+	WayCheck(char[][] field, int tempX, int tempY){
+		arr = new char[field.length][field.length];
+		x = tempX;
+		y = tempY;
+	}
+	public static boolean wayCheckExecutor(char[][] field, boolean r, boolean l, boolean u, boolean d, char target ) {
+		if(way(field, x, y, r, l, u, d, target) == false)
+			return false;
+		return true;
+	}
+	public static boolean way (char[][] field,  int tempX, int tempY, boolean r, boolean l, boolean u, boolean d, char target) {
 		
 //		for(int i = 0; i < field.length; i++) {
 //				System.out.println(Arrays.toString(arr[i]));
@@ -16,7 +28,7 @@ public class WayCheck {
 		
 			//way right
 			if(tempY + 1 < arr.length && field[tempX][tempY + 1] != 'H'  && arr[tempX][tempY + 1] != 'X') {
-				if(field[tempX][tempY + 1] == 'O') {
+				if(field[tempX][tempY + 1] == target) {
 					return true;
 				}
 				
@@ -25,7 +37,7 @@ public class WayCheck {
 			}
 			//way left
 			if(tempY > 0 && field[tempX][tempY - 1] != 'H'  && arr[tempX][tempY - 1] != 'X') {
-				if(field[tempX][tempY - 1] == 'O'){				 
+				if(field[tempX][tempY - 1] == target){				 
 					return true;
 				}
 				
@@ -35,7 +47,7 @@ public class WayCheck {
 			
 			//way down
 			if(tempX + 1 < arr.length && field[tempX + 1][tempY] != 'H'  && arr[tempX + 1][tempY] != 'X') {
-				if(field[tempX + 1][tempY] == 'O') {
+				if(field[tempX + 1][tempY] == target) {
 					return true;
 				}
 				
@@ -45,7 +57,7 @@ public class WayCheck {
 			
 			//way up
 			if(tempX > 0 &&  field[tempX - 1][tempY] != 'H'  && arr[tempX - 1][tempY] != 'X') {
-				if(field[tempX - 1][tempY] == 'O') {
+				if(field[tempX - 1][tempY] == target) {
 					return true;
 				}	
 				arr[tempX - 1][tempY] = 'X';
@@ -53,20 +65,20 @@ public class WayCheck {
 			}
 			
 			if(r) {
-				if(way(field, arr, tempX, tempY + 1, r ,l, u, d))
+				if(way(field,  tempX, tempY + 1, r ,l, u, d, target))
 					return true;
 			}
 			if(l) {
-				if(way(field, arr, tempX, tempY - 1, r, l, u, d)) 
+				if(way(field, tempX, tempY - 1, r, l, u, d, target)) 
 					return true;
 				
 			}
 			if(d) {
-				if(way(field, arr, tempX + 1, tempY, r, l, u, d))
+				if(way(field, tempX + 1, tempY, r, l, u, d, target))
 					return true;
 			}
 			if(u) {
-				if(way(field, arr, tempX - 1, tempY, r, l ,u, d))
+				if(way(field,  tempX - 1, tempY, r, l ,u, d, target))
 					return true;
 			}
 			
