@@ -1,26 +1,29 @@
 import java.util.Arrays;
 
-public class WayCheck {
+public class Ghost {
 	static char[][] arr;
-
+	static int x;
+	static int y;
 	static int counter;
+	static char directionsArr[];
 	
-	WayCheck(char[][] field, int tempX, int tempY, int gX, int gY){
+	Ghost(char[][] field, int tempX, int tempY){
 		arr = new char[field.length][field.length];
-
+		x = tempX;
+		y = tempY;
 	}
-	public static boolean wayCheckExecutor(char[][] field,int x, int y, boolean r, boolean l, boolean u, boolean d, char target, int count, char[] directionsArr ) {
+	public static boolean wayCheckExecutor(char[][] field, boolean r, boolean l, boolean u, boolean d, char target ) {
 		counter = 0;
-		arr = new char[field.length][field.length];
-		if(way(field, x, y, r, l, u, d, target, count, directionsArr) == false)
+		if(way(field, x, y, r, l, u, d, target) == false)
 			return false;
 		return true;
 	}
-	public static boolean way (char[][] field,  int tempX, int tempY, boolean r, boolean l, boolean u, boolean d, char target, int count, char[] directionsArr) {
+	
+	public static boolean way (char[][] field,  int tempX, int tempY, boolean r, boolean l, boolean u, boolean d, char target) {
 		
-//		for (int i = 0; i < field.length; i++) {
-//			System.out.println(Arrays.toString(arr[i]));
-//		}
+		for (int i = 0; i < field.length; i++) {
+			System.out.println(Arrays.toString(arr[i]));
+		}
 		System.out.println( " ");
 			r = false;
 			l = false;
@@ -66,51 +69,36 @@ public class WayCheck {
 			}
 			
 			if(r) {
-				if(way(field,  tempX, tempY + 1, r ,l, u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+				if(way(field,  tempX, tempY + 1, r ,l, u, d, target)) {
+					if(target == 'G')
 						counter++;
 						
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'r';
-					}
-					}
 					return true;
 				}
-				
 			}
+			
 			if(l) {
-				if(way(field, tempX, tempY - 1, r, l, u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+				if(way(field, tempX, tempY - 1, r, l, u, d, target)) {
+					if(target == 'G')
 						counter++;
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'l';
-					}
-					}
+					
 					return true;
 				}
 				
 			}
 			if(d) {
-				if(way(field, tempX + 1, tempY, r, l, u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+				if(way(field, tempX + 1, tempY, r, l, u, d, target)) {
+					if(target == 'G')
 						counter++;
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'd';
-					}
-					}
+					
 					return true;
 				}
 			}
 			if(u) {
-				if(way(field,  tempX - 1, tempY, r, l ,u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+				if(way(field,  tempX - 1, tempY, r, l ,u, d, target)) {
+					if(target == 'G')
 						counter++;
-						
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'u';
-						
-					}
-					}
+					
 					return true;
 				}
 			}
@@ -119,9 +107,8 @@ public class WayCheck {
 			 return false;
 	
 	}
-	int counter() {
+	int ghostWay() {
 		return counter;
 	}
-	
 }
 

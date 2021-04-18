@@ -19,19 +19,22 @@ public class Pacman {
 	// H possitions
 	static int k = 0;
 	static int l = 0;
+	
 	// H counter
 	static int hLimit;
+	
 	// direction  chooser
 	static int direction = (int) Math.floor(Math.random() * 4);
 	static boolean right;
 	static boolean left;
 	static boolean up;
 	static boolean down;
+	
+	static int moveCount;
+	static char[] directionsArr;
+	
+	static WayCheck wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
 
-	static WayCheck wayCheck = new WayCheck(wayToArr, x, y);
-	public static void startPossitions() {
-		
-	}
 	public static boolean fieldCreate() {
 		while(x == i && y == j) {
 			i = (int) Math.floor(Math.random() * field.length);
@@ -66,7 +69,7 @@ public class Pacman {
 				}
 
 //				//way possibility checking
-				if (wayCheck.wayCheckExecutor(field, right, left, up, down, 'O') == false) {
+				if (wayCheck.wayCheckExecutor(field, x, y,  right, left, up, down, 'O', 0, directionsArr) == false) {
 					for(int i = 0; i < field.length; i++) {
 						System.out.println(Arrays.toString(field[i]));
 					}
@@ -74,20 +77,29 @@ public class Pacman {
 					return false;
 				} else
 					System.out.println("dzia³a");
-				wayCheck = new WayCheck(wayToArr, x, y);
+			
+				wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
 				
 				//ghost way checking
-				if (wayCheck.wayCheckExecutor(field, right, left, up, down, 'G')) {	
+				if (wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr)) {	
 					System.out.println("Duch ma drogê");
+					moveCount = wayCheck.counter();
 				}else System.out.println("Duch nie ma drogi");
-				wayCheck = new WayCheck(wayToArr, x, y);
-				
+				wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
+				directionsArr = new char[moveCount];
+				wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr);
+				moveCount = 0;
 				// field printing
 				for (int i = 0; i < field.length; i++) {
 					System.out.println(Arrays.toString(field[i]));
 
 				}
+				
+				
+//				System.out.println(Arrays.toString(directionsArr));
+				System.out.println();
 				System.out.println("score: " + count);
+				
 				return true;
 
 	}
@@ -124,6 +136,19 @@ public class Pacman {
 				field[x][y] = 'X';
 				field[x][y - 1] = '_';
 			}
+			
+			//ghost way checking
+			if (wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr)) {	
+				moveCount = wayCheck.counter();
+				System.out.println(moveCount);
+				System.out.println("Duch ma drogê");
+			}else System.out.println("Duch nie ma drogi");
+			directionsArr = new char[moveCount];
+			wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
+			wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr);
+			moveCount = 0;
+			
+			
 			if (x == i && y == j) {
 				count++;
 				i = (int) Math.floor(Math.random() * field.length);
@@ -136,7 +161,7 @@ public class Pacman {
 				field[i][j] = 'O';
 
 //				way possibility checking
-				if (wayCheck.wayCheckExecutor(field, right, left, up, down, 'O') == false) {
+				if (wayCheck.wayCheckExecutor(field, x, y, right, left, up, down, 'O', 0, directionsArr) == false) {
 					for(int i = 0; i < field.length; i++) {
 						System.out.println(Arrays.toString(field[i]));
 					}
@@ -144,14 +169,11 @@ public class Pacman {
 					return false;
 				} else
 					System.out.println("dzia³a");
-				wayCheck = new WayCheck(wayToArr, x, y);
 				
-				//ghost way checking
-				if (wayCheck.wayCheckExecutor(field, right, left, up, down, 'G')) {	
-					System.out.println("Duch ma drogê");
-				}else System.out.println("Duch nie ma drogi");
-				wayCheck = new WayCheck(wayToArr, x, y);
 				
+				wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
+				
+			
 				if(count % 3 == 0) {
 					if(fieldCreate() == false) {
 						return false;
@@ -161,13 +183,16 @@ public class Pacman {
 			} else if (move.equals("q"))
 				y = field.length + 1;
 			
-
+			
 			for (int i = 0; i < field.length; i++) {
 				System.out.println(Arrays.toString(field[i]));
 
 			}
-			;
 
+			System.out.println(moveCount);
+			
+			System.out.println(Arrays.toString(directionsArr));
+			System.out.println();
 			System.out.println("score: " + count);
 
 		}
