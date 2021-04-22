@@ -67,12 +67,12 @@ public class WayCheck {
 			
 			if(r) {
 				if(way(field,  tempX, tempY + 1, r ,l, u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+					if(target == 'G') {
 						counter++;
 						
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'r';
-					}
+						if(count > 0) {
+							directionsArr[directionsArr.length - counter] = 'r';
+						}
 					}
 					return true;
 				}
@@ -80,11 +80,11 @@ public class WayCheck {
 			}
 			if(l) {
 				if(way(field, tempX, tempY - 1, r, l, u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+					if(target == 'G') {
 						counter++;
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'l';
-					}
+						if(count > 0) {
+							directionsArr[directionsArr.length - counter] = 'l';
+						}
 					}
 					return true;
 				}
@@ -92,24 +92,24 @@ public class WayCheck {
 			}
 			if(d) {
 				if(way(field, tempX + 1, tempY, r, l, u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+					if(target == 'G') {
 						counter++;
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'd';
-					}
+						if(count > 0) {
+							directionsArr[directionsArr.length - counter] = 'd';
+						}
 					}
 					return true;
 				}
 			}
 			if(u) {
 				if(way(field,  tempX - 1, tempY, r, l ,u, d, target, count, directionsArr)) {
-					if(target == 'X') {
+					if(target == 'G') {
 						counter++;
 						
-					if(count > 0) {
-						directionsArr[directionsArr.length - counter] = 'u';
-						
-					}
+						if(count > 0) {
+							directionsArr[directionsArr.length - counter] = 'u';
+							
+						}
 					}
 					return true;
 				}
@@ -121,6 +121,23 @@ public class WayCheck {
 	}
 	int counter() {
 		return counter;
+	}
+	int [] ghostMove (char[][] field,char[] directionsArr, int x, int y){
+		int arr[] = {x, y};
+		if(directionsArr[0] == 'r') {
+			arr[1] = y + 1;
+		}
+		if(directionsArr[0] == 'l') {
+			arr[1] = y - 1;
+		}
+		if(directionsArr[0] == 'd') {
+			arr[0] = x + 1;
+		}
+		if(directionsArr[0] == 'u') {
+			arr[0] = x - 1;
+		}
+		
+		return arr;
 	}
 	
 }

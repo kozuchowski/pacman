@@ -16,6 +16,9 @@ public class Pacman {
 	static int ghostX = (int) Math.floor(Math.random() * field.length);
 	static int ghostY = (int) Math.floor(Math.random() * field[0].length);
 	
+	//ghost moving possition
+	static int[] ghostArr = {ghostX, ghostY};
+	
 	// H possitions
 	static int k = 0;
 	static int l = 0;
@@ -81,14 +84,15 @@ public class Pacman {
 				wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
 				
 				//ghost way checking
-				if (wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr)) {	
+				if (wayCheck.wayCheckExecutor(field, x, y, right, left, up, down, 'G', moveCount, directionsArr)) {	
 					System.out.println("Duch ma drogê");
 					moveCount = wayCheck.counter();
 				}else System.out.println("Duch nie ma drogi");
 				wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
 				directionsArr = new char[moveCount];
-				wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr);
+				wayCheck.wayCheckExecutor(field, x, y, right, left, up, down, 'G', moveCount, directionsArr);
 				moveCount = 0;
+				System.out.println(Arrays.toString(directionsArr));
 				// field printing
 				for (int i = 0; i < field.length; i++) {
 					System.out.println(Arrays.toString(field[i]));
@@ -96,8 +100,6 @@ public class Pacman {
 				}
 				
 				
-//				System.out.println(Arrays.toString(directionsArr));
-				System.out.println();
 				System.out.println("score: " + count);
 				
 				return true;
@@ -138,14 +140,13 @@ public class Pacman {
 			}
 			
 			//ghost way checking
-			if (wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr)) {	
+			if (wayCheck.wayCheckExecutor(field, x, y, right, left, up, down, 'G', moveCount, directionsArr)) {	
 				moveCount = wayCheck.counter();
-				System.out.println(moveCount);
 				System.out.println("Duch ma drogê");
 			}else System.out.println("Duch nie ma drogi");
 			directionsArr = new char[moveCount];
 			wayCheck = new WayCheck(wayToArr, x, y, ghostX, ghostY);
-			wayCheck.wayCheckExecutor(field, ghostX, ghostY, right, left, up, down, 'X', moveCount, directionsArr);
+			wayCheck.wayCheckExecutor(field, x, y, right, left, up, down, 'G', moveCount, directionsArr);
 			moveCount = 0;
 			
 			
@@ -183,15 +184,20 @@ public class Pacman {
 			} else if (move.equals("q"))
 				y = field.length + 1;
 			
-			
+//			tutaj trza funkcjê do poruszania ducha
+			System.out.println(Arrays.toString(directionsArr));
+			ghostArr = wayCheck.ghostMove(field, directionsArr, ghostX, ghostY);
+			field[ghostX][ghostY] = '_';
+			ghostX = ghostArr[0];
+			ghostY = ghostArr[1];
+			field[ghostX][ghostY] = 'G';
+			System.out.println(Arrays.toString(directionsArr));
 			for (int i = 0; i < field.length; i++) {
 				System.out.println(Arrays.toString(field[i]));
 
 			}
-
-			System.out.println(moveCount);
 			
-			System.out.println(Arrays.toString(directionsArr));
+			
 			System.out.println();
 			System.out.println("score: " + count);
 
